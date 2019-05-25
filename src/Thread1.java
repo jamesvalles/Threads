@@ -1,5 +1,8 @@
 import com.sun.javafx.scene.traversal.Algorithm;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.Random;
+import javax.xml.bind.DatatypeConverter;
 
 public class Thread1 extends Thread {
 
@@ -11,6 +14,7 @@ public class Thread1 extends Thread {
 
 
      String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 
      Random random = new Random();
      StringBuilder word = new StringBuilder();
@@ -24,7 +28,17 @@ public class Thread1 extends Thread {
       } catch(Exception e){
 
       }
-     System.out.println("Hash: " + word.hashCode());
+     String password = word.toString();
+      try {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+     byte[] digest = md.digest(password.getBytes(StandardCharsets.UTF_8));
+     String sha256 = DatatypeConverter.printHexBinary(digest).toLowerCase();
+        System.out.println("Hash: " + sha256 );
+      } catch (Exception e){
+        System.out.println("Error.");
+      }
+
       count++;
       System.out.println("Timer B: "+ count);
     }
